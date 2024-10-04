@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Desarrollo basado en Plataformas</title>
+
+
+
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        border: 2px solid rgb(71, 29, 71);
+        border-radius: 10px;
+        width: 300px;
+        text-align: center;
+      }
+
+      .container h1, .container p {
+        margin-top: 0;
+      }
+
+      #new-task input[type="text"] {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      #new-task input[type="submit"] {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #28a745;
+        color: white;
+        cursor: pointer;
+      }
+
+      #new-task input[type="submit"]:hover {
+        background-color: #218838;
+      }
+
+      button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        margin: 5px 0;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      ol {
+        padding-left: 20px;
+        text-align: left;
+      }
+
+      li {
+        margin: 10px 0;
+        list-style-type: none;
+      }
+    </style>
+
+
+
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        //Añadir
+        document.querySelector('#new-task').onsubmit = () => {
+          const taskInput = document.querySelector('#task');
+
+          //Verificar si esta vacio
+          if (taskInput.value.trim() === "") {
+            alert("Por favor, ingrese una tarea.");
+            return false;
+          }
+
+          const cb = document.createElement("INPUT");
+          cb.setAttribute("type", "checkbox");
+
+          const span = document.createElement('span');
+          span.textContent = taskInput.value;
+
+          //Marcar el texto
+          cb.addEventListener('change', () => {
+            if (cb.checked) {
+              span.style.textDecoration = 'line-through';
+            } else {
+              span.style.textDecoration = 'none';
+            }
+          });
+          //Añadir la estructura a cada tarea añadida
+          const li = document.createElement('li');
+          li.appendChild(cb);
+          li.appendChild(span);
+          document.querySelector('#tasks').append(li);
+
+          taskInput.value = '';
+
+          return false;
+        };
+
+        //Seleccionar
+        document.querySelector('#seleccionar-todo').onclick = () => {
+          const tasks = document.querySelectorAll('#tasks li input[type="checkbox"]');
+          tasks.forEach(task => {
+            task.checked = true;
+            task.nextElementSibling.style.textDecoration = 'line-through';
+          });
+        };
+
+        //Deseleccionar
+        document.querySelector('#deseleccionar-todo').onclick = () => {
+          const tasks = document.querySelectorAll('#tasks li input[type="checkbox"]');
+          tasks.forEach(task => {
+            task.checked = false;
+            task.nextElementSibling.style.textDecoration = 'none';
+          });
+        };
+
+        //Borrar
+        document.querySelector('#borrar').onclick = () => {
+          const tasks = document.querySelectorAll('#tasks li');
+          tasks.forEach(task => {
+            if (task.querySelector('input[type="checkbox"]').checked) {
+              task.remove();
+            }
+          });
+        };
+      });
+    </script>
+  </head>
+
+
+
+
+
+  <body>
+    <div class="container">
+      <p>Computer Science</p>
+      <h1>To do list</h1>
+      <form id="new-task">
+        <input id="task" autocomplete="off" autofocus placeholder="Nueva tarea" type="text">
+        <input type="submit" value="Añadir tarea">
+      </form>
+      <button id="seleccionar-todo">Seleccionar todo</button>
+      <button id="deseleccionar-todo">Deseleccionar todo</button>
+      <button id="borrar">Borrar lo seleccionado</button>
+      <ol id="tasks">
+      </ol>
+    </div>
+  </body>
+</html>
